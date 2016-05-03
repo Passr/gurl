@@ -2,6 +2,7 @@ package requestbuilder
 
 import (
 	"flag"
+        "github.com/spf13/pflag"
 	"net/http"
 )
 
@@ -26,7 +27,9 @@ func (b *RequestBuilder) Build() (*http.Request, error) {
 }
 
 func (b *RequestBuilder) parseArgs() {
-	fs := flag.NewFlagSet("gurl", flag.PanicOnError)
+	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
+        pflag.Parse
+        fs := flag.NewFlagSet("gurl", flag.PanicOnError)
 
 	fs.StringVar(&b.method, "X", "GET", "http request method")
 	fs.Parse(b.args)
